@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>credinest.info</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css" media="max-width: 768px">
+    <style>
+        nav {
+            background-color: #007bff;
+            /* Initial background color of the navigation bar */
+            color: white;
+            padding: 1em 0;
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h1 {
+            margin: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5em 1em;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            /* Smooth transition for hover effect */
+        }
+
+        nav ul li a.active {
+            background-color: #0056b3;
+            /* Darker shade for the active link */
+        }
+
+        nav ul li a:hover {
+            background-color: #0056b3;
+            /* Background color on hover */
+            color: #f8f9fa;
+            /* Text color on hover */
+        }
+    </style>
+
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+    <script>
+        (function () {
+            // Initialize googletag if not already defined
+            window.googletag = window.googletag || { cmd: [] };
+
+            // Ad slot variables
+            let adSlot1, adSlot2, anchorSlot;
+            const refreshInterval = 30000; // 30 seconds - more user-friendly refresh rate
+            let refreshTimer;
+
+            // Function to set up ads
+            function setupAds() {
+                googletag.cmd.push(function () {
+                    // Setup PubAds
+                    const pubads = googletag.pubads();
+                    pubads.enableSingleRequest();
+                    pubads.setCentering(true);
+
+                    // Apply geotargeting if available
+                    if (window.geoTarget) {
+                        pubads.setLocation(window.geoTarget);
+                    }
+
+                    // Define Ad Slots with consistent IDs
+                    adSlot1 = googletag.defineSlot(
+                        '/21952429235/sahajanand_credinest.info_native',
+                        [[300, 250], [320, 480], [250, 250], [300, 100], 'fluid', [336, 280]],
+                        'ad-slot-1'
+                    ).addService(pubads);
+
+                    adSlot2 = googletag.defineSlot(
+                        '/21952429235/sahajanand_credinest.info_native',
+                        [[300, 250], [320, 480], [250, 250], [300, 100], 'fluid', [336, 280]],
+                        'ad-slot-2'
+                    ).addService(pubads);
+
+                    // Define anchor ad with proper ID
+                    anchorSlot = googletag.defineOutOfPageSlot(
+                        '/21952429235/sahajanand_credinest.info_native',
+                        googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR
+                    );
+
+                    if (anchorSlot) {
+                        anchorSlot.addService(pubads);
+                        // Use the correct ID for the anchor ad
+                        anchorSlot.setElementId('ad-anchor-slot');
+                    }
+
+                    // Event listeners for ad loading
+                    pubads.addEventListener('slotRenderEnded', function (event) {
+                        // Handle ad render events if needed
+                        const slotId = event.slot.getSlotElementId();
+                        const isEmpty = event.isEmpty;
+
+                        // Example: hide containers with no ads
+                        if (isEmpty && document.getElementById(slotId)) {
+                            document.getElementById(slotId).style.display = 'none';
+                        }
+                    });
+
+                    // Enable services
+                    googletag.enableServices();
+
+                    // Display ads
+                    try {
+                        if (document.getElementById('ad-slot-1')) {
+                            googletag.display('ad-slot-1');
+                        }
+                        if (document.getElementById('ad-slot-2')) {
+                            googletag.display('ad-slot-2');
+                        }
+                        if (document.getElementById('ad-anchor-slot')) {
+                            googletag.display('ad-anchor-slot');
+                        }
+                    } catch (error) {
+                        console.log('Error displaying ads:', error);
+                    }
+
+                    // Set up periodic refresh with error handling
+                    setupAdRefresh();
+                });
+            }
+
+            // Function to handle ad refresh
+            function setupAdRefresh() {
+                if (refreshTimer) {
+                    clearInterval(refreshTimer);
+                }
+
+                refreshTimer = setInterval(function () {
+                    try {
+                        // Only refresh if slots exist and are defined
+                        const slotsToRefresh = [];
+                        if (adSlot1) slotsToRefresh.push(adSlot1);
+                        if (adSlot2) slotsToRefresh.push(adSlot2);
+
+                        if (slotsToRefresh.length > 0) {
+                            googletag.cmd.push(function () {
+                                googletag.pubads().refresh(slotsToRefresh);
+                            });
+                        }
+                    } catch (error) {
+                        console.log('Error refreshing ads:', error);
+                        clearInterval(refreshTimer); // Stop trying on persistent errors
+                    }
+                }, refreshInterval);
+            }
+
+            // Check for ad blockers (simple detection)
+            function checkAdBlocker() {
+                const testAd = document.createElement('div');
+                testAd.innerHTML = '&nbsp;';
+                testAd.className = 'adsbox';
+                document.body.appendChild(testAd);
+
+                setTimeout(function () {
+                    if (testAd.offsetHeight === 0) {
+                        console.log('Ad blocker detected');
+                        // You can show a message to users or implement fallback content
+                    }
+                    document.body.removeChild(testAd);
+                }, 100);
+            }
+
+            // Initialize ads when DOM is ready
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                setupAds();
+                checkAdBlocker();
+            } else {
+                document.addEventListener('DOMContentLoaded', function () {
+                    setupAds();
+                    checkAdBlocker();
+                });
+            }
+
+            // Clean up on page unload
+            window.addEventListener('beforeunload', function () {
+                if (refreshTimer) {
+                    clearInterval(refreshTimer);
+                }
+            });
+        })();
+
+    </script>
+
+
+
+    <style>
+        #banner-ad {
+            width: 100%;
+            max-width: 425px;
+            margin: 1rem auto 0.5rem;
+            padding: 0.5rem;
+
+            box-shadow: 0 4px 15px var(--shadow-dark);
+            border-radius: 8px;
+            position: relative;
+            text-align: center;
+            border: 1px solid var(--accent-gold);
+        }
+
+        #banner-ad::before {
+            content: "Advertisement";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--accent-gold);
+            background: var(--primary-dark);
+            padding: 0 8px;
+            border-radius: 4px;
+            border: 1px solid var(--accent-gold);
+        }
+
+        .ad-divider {
+            width: 90%;
+            max-width: 425px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            margin: 0.5rem auto;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            max-width: 425px;
+            margin: 0 auto;
+            background: linear-gradient(180deg, #0d001a 0%, #1a0033 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 0 40px var(--shadow-dark);
+            border-left: 1px solid var(--accent-gold);
+            border-right: 1px solid var(--accent-gold);
+        }
+
+
+        */ .tab-content.active {
+            display: block;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--accent-gold);
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px var(--shadow-light);
+            font-family: 'Orbitron', sans-serif;
+        }
+    </style>
+
+
+
+
+</head>
+
+<body>
+    <nav>
+        <div class="container">
+            <h1>credinest.info</h1>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="bank.html">Bank</a></li>
+                <li><a href="finance_basics.html">Finance Basics</a></li>
+                <li><a href="loans.html">Loans</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Welcome to Your Guide on Banking and Finance</h2>
+            <p>Explore comprehensive insights about banking systems, understand essential finance principles, and
+                discover a wide range of loan options suitable for various life goals around the world.</p>
+            <a href="bank.html" class="button">Learn about Banking</a>
+        </section>
+        <!-- ads  -->
+        <div id="banner-ad" class="ads-box" style="min-height: 250px;">
+            <div id="ad-slot-1" class="ad-container" style="display: block !important;"></div>
+
+        </div>
+        <section class="featured">
+            <div class="feature-item">
+                <h3>Finance Basics</h3>
+                <p>Gain confidence in managing your money by mastering key financial skills—learn how to create a
+                    budget, build savings, make smart investments, and manage your debt effectively to improve your
+                    overall financial health.</p>
+                <a href="finance_basics.html">Explore Basics</a>
+            </div>
+            <div class="feature-item">
+                <h3>Loan Options</h3>
+                <p>Understand the different types of loans available globally—whether you're planning to buy a home,
+                    fund your education, start a business, or consolidate debt, knowing your loan options empowers
+                    better borrowing decisions.</p>
+                <a href="loans.html">View Loan Options</a>
+            </div>
+        </section>
+
+        <section class="additional-content">
+            <h2>Exploring Financial Planning</h2>
+            <p>Financial planning involves setting financial goals, assessing your current financial position, and
+                building a strategic roadmap to meet those goals. It’s about making proactive decisions today that
+                secure your tomorrow.</p>
+
+            <h3>Key Components of Financial Planning</h3>
+            <ul>
+                <li><strong>Goal Setting:</strong> Establishing clear financial goals for the short-term (e.g., building
+                    an emergency fund), medium-term (e.g., buying a car), and long-term (e.g., retirement or owning a
+                    home).</li>
+                <li><strong>Budgeting and Expense Tracking:</strong> Understanding your cash flow to control spending,
+                    reduce unnecessary expenses, and optimize savings.</li>
+                <li><strong>Saving and Investing:</strong> Setting aside money for future use and allocating funds to
+                    investment options like stocks, bonds, mutual funds, or real estate to grow wealth.</li>
+                <li><strong>Risk Management:</strong> Using insurance and emergency funds to protect yourself from
+                    financial shocks such as illness, accidents, or job loss.</li>
+                <li><strong>Retirement Planning:</strong> Preparing financially for retirement by contributing to
+                    pension plans, retirement accounts, or long-term investments to ensure stability in later years.
+                </li>
+                <li><strong>Tax Planning:</strong> Applying legal strategies to reduce your tax burden and increase your
+                    net income, including deductions, credits, and retirement contributions.</li>
+            </ul>
+
+            <!-- ads  -->
+            <div id="banner-ad" class="ads-box" style="min-height: 250px;">
+                <div id="ad-slot-2" class="ad-container" style="display: block !important;"></div>
+
+            </div>
+            
+            <h3>Benefits of Financial Planning</h3>
+            <ul>
+                <li>Gives you control over your money and financial future.</li>
+                <li>Supports smarter, goal-oriented decision-making.</li>
+                <li>Minimizes financial stress by preparing for unexpected events.</li>
+                <li>Encourages disciplined saving and spending habits.</li>
+                <li>Helps secure a better quality of life for you and your family.</li>
+            </ul>
+
+            <p>Stay connected for more detailed guides, tools, and tips on budgeting, investing, credit management, and
+                building long-term wealth.</p>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 credinest.info</p>
+        </div>
+    </footer>
+
+
+    <!-- ads  -->
+    <div id="ad-anchor-slot"></div>
+
+    <script>
+        // Disable right-click
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            alert('Right-click is disabled to protect our content.');
+        });
+
+        // Disable keyboard shortcuts
+        document.onkeydown = function (e) {
+            if (
+                (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'c' || e.key === 'i' || e.key === 'j')) ||
+                e.key === 'F12' ||
+                (e.metaKey && e.altKey && e.key === 'i')
+            ) {
+                e.preventDefault();
+                alert('Access to developer tools and source code is disabled to protect our content.');
+                return false;
+            }
+            return true;
+        };
+
+        // Disable text selection
+        document.addEventListener('selectstart', function (e) {
+            e.preventDefault();
+        });
+
+        // Disable drag and drop
+        document.addEventListener('dragstart', function (e) {
+            e.preventDefault();
+        });
+    </script>
+
+    <script>
+        window.googletag = window.googletag || { cmd: [] };
+        var anchorSlot;
+        googletag.cmd.push(function () {
+            anchorSlot = googletag.defineOutOfPageSlot('/21952429235/sahajanand_credinest.info_native', googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR);
+            if (anchorSlot) {
+                anchorSlot.addService(googletag.pubads());
+            }
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();
+        });
+    </script>
+
+    <script>
+        (function () {
+            document.addEventListener("DOMContentLoaded", function () {
+                console.log("DOM fully loaded.");
+
+                function showRewardedAd() {
+                    if (!window.googletag || !googletag.cmd) {
+                        console.error("Google Ad Manager is not properly initialized.");
+                        return;
+                    }
+                    // reward ads
+                    googletag.cmd.push(function () {
+                        try {
+                            const rewardedSlot = googletag
+                                .defineOutOfPageSlot('/23270265301/sahajanand_finorise.info_rewarded', googletag.enums.OutOfPageFormat.REWARDED)
+                                .addService(googletag.pubads());
+
+                            googletag.enableServices();
+                            googletag.display(rewardedSlot);
+                            console.log("Attempting to display rewarded ad...");
+
+                            googletag.pubads().addEventListener("rewardedSlotReady", function (evt) {
+                                console.log("Rewarded ad ready.");
+                                evt.makeRewardedVisible();
+                            });
+
+                            googletag.pubads().addEventListener("rewardedSlotClosed", function () {
+                                console.log("Ad closed.");
+                                googletag.destroySlots([rewardedSlot]);
+                            });
+                        } catch (error) {
+                            console.error("Error during ad setup:", error);
+                        }
+                    });
+                }
+
+                // Add 2-second delay before showing the rewarded ad
+                setTimeout(function () {
+                    // console.log("2 seconds elapsed, showing rewarded ad...");
+                    // showRewardedAd();
+                }, 2000); // 2000 milliseconds = 2 seconds
+            });
+        })();
+    </script>
+
+
+
+</body>
+
+</html>
